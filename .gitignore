@@ -1,0 +1,57 @@
+# Joomla core and system files (ignore these - your extension lives inside them)
+/administrator/
+/api/
+/bin/
+/cache/
+/cli/
+/components/
+/images/
+/includes/
+/installation/
+/language/
+/layouts/
+/libraries/
+/logs/
+/media/
+/modules/
+/plugins/
+/templates/
+/tmp/
+/configuration.php
+/htaccess.txt
+/web.config.txt
+/joomla.xml
+/README.txt
+/LICENSE.txt
+/robots.txt.dist
+
+# Sensitive / generated files
+configuration.php
+*.bak
+*.old
+*.log
+error_log
+
+# Development ignores (very useful for extensions)
+/vendor/               # Composer dependencies
+node_modules/          # npm / JS dependencies
+/.vscode/              # VS Code settings
+/.idea/                # PhpStorm / IntelliJ
+.DS_Store              # macOS junk
+Thumbs.db              # Windows junk
+*.sublime-project
+*.sublime-workspace
+
+# Build / dist files (if you minify/compress JS/CSS)
+*.min.js
+*.min.css
+/dist/
+
+# Extension-specific temp files (common in Joomla dev)
+*.zip                  # Package zips you create for testing/install
+*.package
+/package/
+/build/
+
+# Keep your extension files! (these are examples - adjust if your structure differs)
+# !/plugins/search/yoursearchplugin/     # Uncomment & customize if needed
