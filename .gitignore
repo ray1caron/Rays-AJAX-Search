@@ -42,10 +42,10 @@ Thumbs.db
 *.sublime-*
 
 # Build/package files
+builds/
 *.zip
 /dist/
 /package/
-/build/
 
 # Optional: If your extension files are in a subfolder like plugins/search/raysajaxsearch/
 # You can add ! to force Git to track them (unignore)
