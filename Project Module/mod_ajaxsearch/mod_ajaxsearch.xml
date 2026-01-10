@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" version="4.0.0" method="upgrade">
+    <name>AJAX Smart Search</name>
+    <author>[Your Name/Company]</author>
+    <copyright>[Your Copyright]</copyright>
+    <creationDate>[Date]</creationDate>
+    <license>GNU General Public License version 3 or later</license>
+    <authorUrl>[Your Website]</authorUrl>
+    <version>1.4.0</version>
+    <description>
+        <![CDATA[
+        Advanced AJAX search with SP Page Builder support.
+        Provides real-time search results as you type.
+        ]]>
+    </description>
+    
+    <files>
+        <filename module="mod_ajaxsearch">mod_ajaxsearch.php</filename>
+        <filename>helper.php</filename>
+        <filename>index.html</filename>
+        <folder>tmpl</folder>
+        <folder>media</folder>
+        <folder>language</folder>
+    </files>
+    
+    <languages>
+        <language tag="en-GB">language/en-GB/mod_ajaxsearch.ini</language>
+        <language tag="en-GB">language/en-GB/mod_ajaxsearch.sys.ini</language>
+    </languages>
+    
+    <config>
+        <fields name="params">
+            <fieldset name="basic" label="MOD_AJAXSEARCH_BASIC_SETTINGS">
+                
+                <field
+                    name="search_types"
+                    type="list"
+                    label="MOD_AJAXSEARCH_SEARCH_TYPES_LABEL"
+                    description="MOD_AJAXSEARCH_SEARCH_TYPES_DESC"
+                    multiple="true"
+                    filter="string"
+                    default="article,sppagebuilder"
+                >
+                    <option value="article">MOD_AJAXSEARCH_TYPE_ARTICLES</option>
+                    <option value="sppagebuilder">MOD_AJAXSEARCH_TYPE_SPPAGES</option>
+                </field>
+                
+                <field
+                    name="min_chars"
+                    type="number"
+                    label="MOD_AJAXSEARCH_MIN_CHARS_LABEL"
+                    description="MOD_AJAXSEARCH_MIN_CHARS_DESC"
+                    default="2"
+                    min="1"
+                    max="10"
+                />
+                
+                <field
+                    name="typing_delay"
+                    type="number"
+                    label="MOD_AJAXSEARCH_TYPING_DELAY_LABEL"
+                    description="MOD_AJAXSEARCH_TYPING_DELAY_DESC"
+                    default="300"
+                    min="0"
+                    max="2000"
+                    step="50"
+                />
+                
+                <field
+                    name="results_limit"
+                    type="number"
+                    label="MOD_AJAXSEARCH_RESULTS_LIMIT_LABEL"
+                    description="MOD_AJAXSEARCH_RESULTS_LIMIT_DESC"
+                    default="10"
+                    min="1"
+                    max="50"
+                />
+                
+            </fieldset>
+            
+            <fieldset name="display" label="MOD_AJAXSEARCH_DISPLAY_SETTINGS">
+                
+                <field
+                    name="show_category"
+                    type="radio"
+                    label="MOD_AJAXSEARCH_SHOW_CATEGORY_LABEL"
+                    description="MOD_AJAXSEARCH_SHOW_CATEGORY_DESC"
+                    default="1"
+                    class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="show_date"
+                    type="radio"
+                    label="MOD_AJAXSEARCH_SHOW_DATE_LABEL"
+                    description="MOD_AJAXSEARCH_SHOW_DATE_DESC"
+                    default="1"
+                    class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="show_type"
+                    type="radio"
+                    label="MOD_AJAXSEARCH_SHOW_TYPE_LABEL"
+                    description="MOD_AJAXSEARCH_SHOW_TYPE_DESC"
+                    default="1"
+                    class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+                <field
+                    name="show_images"
+                    type="radio"
+                    label="MOD_AJAXSEARCH_SHOW_IMAGES_LABEL"
+                    description="MOD_AJAXSEARCH_SHOW_IMAGES_DESC"
+                    default="0"
+                    class="btn-group btn-group-yesno"
+                >
+                    <option value="1">JYES</option>
+                    <option value="0">JNO</option>
+                </field>
+                
+            </fieldset>
+            
+            <fieldset name="advanced" label="MOD_AJAXSEARCH_ADVANCED_SETTINGS">
+                
+                <field
+                    name="moduleclass_sfx"
+                    type="text"
+                    label="MOD_AJAXSEARCH_MODULECLASS_SFX_LABEL"
+                    description="MOD_AJAXSEARCH_MODULECLASS_SFX_DESC"
+                    default=""
+                />
+                
+            </fieldset>
+            
+        </fields>
+    </config>
+</extension>

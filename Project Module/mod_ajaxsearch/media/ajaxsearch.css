@@ -1,0 +1,505 @@
+/* AJAX Search Module - Main CSS */
+.ajaxsearch-module {
+    --ajaxsearch-primary: #0066cc;
+    --ajaxsearch-secondary: #f8f9fa;
+    --ajaxsearch-border: #dee2e6;
+    --ajaxsearch-text: #212529;
+    --ajaxsearch-text-light: #6c757d;
+    --ajaxsearch-highlight: #fff3cd;
+    --ajaxsearch-success: #198754;
+    --ajaxsearch-error: #dc3545;
+    --ajaxsearch-radius: 4px;
+    --ajaxsearch-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    font-family: system-ui, -apple-system, sans-serif;
+    box-sizing: border-box;
+}
+
+.ajaxsearch-module * {
+    box-sizing: border-box;
+}
+
+/* Container */
+.ajaxsearch-container {
+    position: relative;
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* Form */
+.ajaxsearch-form {
+    margin-bottom: 1rem;
+}
+
+.ajaxsearch-input-group {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.ajaxsearch-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: var(--ajaxsearch-text);
+    background-color: white;
+    border: 2px solid var(--ajaxsearch-border);
+    border-radius: var(--ajaxsearch-radius);
+    transition: border-color 0.15s ease-in-out;
+}
+
+.ajaxsearch-input:focus {
+    outline: none;
+    border-color: var(--ajaxsearch-primary);
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+}
+
+.ajaxsearch-button {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    color: white;
+    background-color: var(--ajaxsearch-primary);
+    border: none;
+    border-radius: var(--ajaxsearch-radius);
+    cursor: pointer;
+    transition: background-color 0.15s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.ajaxsearch-button:hover {
+    background-color: #0056b3;
+}
+
+.ajaxsearch-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.3);
+}
+
+.ajaxsearch-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Filters */
+.ajaxsearch-filters {
+    padding: 0.75rem;
+    background-color: var(--ajaxsearch-secondary);
+    border-radius: var(--ajaxsearch-radius);
+    margin-bottom: 1rem;
+}
+
+.ajaxsearch-filter-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.ajaxsearch-filter-label {
+    font-weight: 600;
+    color: var(--ajaxsearch-text);
+}
+
+.ajaxsearch-filter-option {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+    cursor: pointer;
+    user-select: none;
+}
+
+.ajaxsearch-filter-option input[type="checkbox"] {
+    margin: 0;
+    cursor: pointer;
+}
+
+/* Results Container */
+.ajaxsearch-results-container {
+    position: relative;
+    min-height: 100px;
+}
+
+.ajaxsearch-results-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--ajaxsearch-border);
+    margin-bottom: 1rem;
+}
+
+.ajaxsearch-results-info {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+.ajaxsearch-results-count {
+    font-weight: 600;
+    color: var(--ajaxsearch-text);
+}
+
+.ajaxsearch-results-time {
+    font-size: 0.875rem;
+    color: var(--ajaxsearch-text-light);
+}
+
+.ajaxsearch-results-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.ajaxsearch-clear {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--ajaxsearch-text-light);
+    background: none;
+    border: 1px solid var(--ajaxsearch-border);
+    border-radius: var(--ajaxsearch-radius);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.ajaxsearch-clear:hover {
+    color: var(--ajaxsearch-error);
+    border-color: var(--ajaxsearch-error);
+}
+
+/* Results List */
+.ajaxsearch-results {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-height: 500px;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+}
+
+.ajaxsearch-results::-webkit-scrollbar {
+    width: 6px;
+}
+
+.ajaxsearch-results::-webkit-scrollbar-track {
+    background: var(--ajaxsearch-secondary);
+    border-radius: 3px;
+}
+
+.ajaxsearch-results::-webkit-scrollbar-thumb {
+    background: var(--ajaxsearch-border);
+    border-radius: 3px;
+}
+
+.ajaxsearch-results::-webkit-scrollbar-thumb:hover {
+    background: var(--ajaxsearch-text-light);
+}
+
+/* Result Item */
+.ajaxsearch-result {
+    padding: 1rem;
+    background-color: white;
+    border: 1px solid var(--ajaxsearch-border);
+    border-radius: var(--ajaxsearch-radius);
+    transition: all 0.15s ease-in-out;
+    position: relative;
+}
+
+.ajaxsearch-result:hover {
+    border-color: var(--ajaxsearch-primary);
+    box-shadow: var(--ajaxsearch-shadow);
+}
+
+.ajaxsearch-result.active {
+    background-color: var(--ajaxsearch-secondary);
+    border-color: var(--ajaxsearch-primary);
+}
+
+.ajaxsearch-result-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.ajaxsearch-result-title {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.3;
+}
+
+.ajaxsearch-result-link {
+    color: var(--ajaxsearch-text);
+    text-decoration: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.ajaxsearch-result-link:hover {
+    color: var(--ajaxsearch-primary);
+    text-decoration: underline;
+}
+
+.ajaxsearch-result-title-text {
+    flex: 1;
+}
+
+.ajaxsearch-result-type {
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    background-color: var(--ajaxsearch-secondary);
+    color: var(--ajaxsearch-text-light);
+    border-radius: 12px;
+    white-space: nowrap;
+}
+
+.ajaxsearch-result-snippet {
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: var(--ajaxsearch-text);
+}
+
+.ajaxsearch-result-snippet mark {
+    background-color: var(--ajaxsearch-highlight);
+    padding: 0.125rem 0;
+    border-radius: 2px;
+    font-weight: 600;
+}
+
+.ajaxsearch-result-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-size: 0.8125rem;
+    color: var(--ajaxsearch-text-light);
+}
+
+.ajaxsearch-result-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Loading State */
+.ajaxsearch-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.ajaxsearch-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--ajaxsearch-border);
+    border-top-color: var(--ajaxsearch-primary);
+    border-radius: 50%;
+    animation: ajaxsearch-spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes ajaxsearch-spin {
+    to { transform: rotate(360deg); }
+}
+
+.ajaxsearch-loading-text {
+    color: var(--ajaxsearch-text-light);
+}
+
+/* No Results State */
+.ajaxsearch-no-results {
+    padding: 3rem 1rem;
+    text-align: center;
+}
+
+.ajaxsearch-no-results-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.ajaxsearch-no-results-title {
+    margin: 0 0 0.5rem 0;
+    color: var(--ajaxsearch-text);
+}
+
+.ajaxsearch-no-results-message {
+    color: var(--ajaxsearch-text-light);
+    max-width: 400px;
+    margin: 0 auto;
+}
+
+/* Error State */
+.ajaxsearch-error {
+    padding: 2rem 1rem;
+    text-align: center;
+    background-color: rgba(220, 53, 69, 0.05);
+    border: 1px solid rgba(220, 53, 69, 0.2);
+    border-radius: var(--ajaxsearch-radius);
+}
+
+.ajaxsearch-error-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+.ajaxsearch-error-title {
+    margin: 0 0 0.5rem 0;
+    color: var(--ajaxsearch-error);
+}
+
+.ajaxsearch-error-message {
+    color: var(--ajaxsearch-text);
+}
+
+/* Pagination */
+.ajaxsearch-pagination {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--ajaxsearch-border);
+}
+
+.ajaxsearch-pagination-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.ajaxsearch-pagination-prev,
+.ajaxsearch-pagination-next {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--ajaxsearch-text);
+    background-color: white;
+    border: 1px solid var(--ajaxsearch-border);
+    border-radius: var(--ajaxsearch-radius);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.ajaxsearch-pagination-prev:hover:not(:disabled),
+.ajaxsearch-pagination-next:hover:not(:disabled) {
+    color: var(--ajaxsearch-primary);
+    border-color: var(--ajaxsearch-primary);
+}
+
+.ajaxsearch-pagination-prev:disabled,
+.ajaxsearch-pagination-next:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.ajaxsearch-pagination-pages {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.ajaxsearch-pagination-page {
+    min-width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+    color: var(--ajaxsearch-text);
+    background-color: white;
+    border: 1px solid var(--ajaxsearch-border);
+    border-radius: var(--ajaxsearch-radius);
+    cursor: pointer;
+    transition: all 0.15s ease-in-out;
+}
+
+.ajaxsearch-pagination-page:hover:not(.active) {
+    color: var(--ajaxsearch-primary);
+    border-color: var(--ajaxsearch-primary);
+}
+
+.ajaxsearch-pagination-page.active {
+    color: white;
+    background-color: var(--ajaxsearch-primary);
+    border-color: var(--ajaxsearch-primary);
+}
+
+/* Keyboard Hint */
+.ajaxsearch-keyboard-hint {
+    margin-top: 1rem;
+    padding: 0.75rem;
+    background-color: var(--ajaxsearch-secondary);
+    border-radius: var(--ajaxsearch-radius);
+    font-size: 0.8125rem;
+    color: var(--ajaxsearch-text-light);
+    text-align: center;
+}
+
+.ajaxsearch-keyboard-hint kbd {
+    display: inline-block;
+    padding: 0.125rem 0.375rem;
+    font-family: monospace;
+    font-size: 0.75rem;
+    background-color: white;
+    border: 1px solid var(--ajaxsearch-border);
+    border-radius: 3px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .ajaxsearch-input-group {
+        flex-direction: column;
+    }
+    
+    .ajaxsearch-button {
+        width: 100%;
+    }
+    
+    .ajaxsearch-filter-group {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .ajaxsearch-results-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+    
+    .ajaxsearch-results {
+        max-height: 400px;
+    }
+    
+    .ajaxsearch-pagination-container {
+        flex-wrap: wrap;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .ajaxsearch-module {
+        --ajaxsearch-primary: #3399ff;
+        --ajaxsearch-secondary: #2d3748;
+        --ajaxsearch-border: #4a5568;
+        --ajaxsearch-text: #e2e8f0;
+        --ajaxsearch-text-light: #a0aec0;
+        --ajaxsearch-highlight: #744210;
+    }
+    
+    .ajaxsearch-input,
+    .ajaxsearch-result,
+    .ajaxsearch-pagination-page,
+    .ajaxsearch-pagination-prev,
+    .ajaxsearch-pagination-next {
+        background-color: #2d3748;
+        color: var(--ajaxsearch-text);
+    }
+    
+    .ajaxsearch-pagination-page.active {
+        background-color: var(--ajaxsearch-primary);
+        color: white;
+    }
+}

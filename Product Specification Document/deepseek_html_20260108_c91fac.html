@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; }
+        h1, h2, h3 { color: #2c3e50; }
+        h1 { border-bottom: 2px solid #3498db; padding-bottom: 10px; }
+        h2 { border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; margin-top: 30px; }
+        .section { margin-bottom: 20px; }
+        .requirement { background: #f8f9fa; padding: 10px; margin: 10px 0; border-left: 4px solid #3498db; }
+        .code { background: #2c3e50; color: #ecf0f1; padding: 10px; font-family: monospace; margin: 10px 0; }
+        .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .table th, .table td { border: 1px solid #ddd; padding: 8px; }
+        .table th { background: #3498db; color: white; }
+        .signature-table { width: 60%; margin-top: 50px; }
+        .footer { margin-top: 50px; font-size: 12px; color: #7f8c8d; text-align: center; }
+    </style>
+</head>
+<body>
+
+<h1>Product Requirements Document</h1>
+<h2>Joomla AJAX Smart Search Extension</h2>
+
+<div class="section">
+    <p><strong>Document Version:</strong> 1.0</p>
+    <p><strong>Date:</strong> [Current Date]</p>
+    <p><strong>Status:</strong> Approved</p>
+    <p><strong>Confidentiality:</strong> Internal Use Only</p>
+</div>
+
+<h2>1. Executive Summary</h2>
+<div class="section">
+    <p>A custom Joomla extension that provides an enhanced, AJAX-powered search solution compatible with <strong>SP Page Builder articles</strong>, <strong>custom fields</strong>, and <strong>standard Joomla articles</strong>. This solution avoids Joomla's Smart Search limitations while maintaining full compatibility with Joomla updates, providing superior search capabilities without database corruption risks.</p>
+</div>
+
+<h2>2. Problem Statement</h2>
+<div class="section">
+    <h3>Current Limitations:</h3>
+    <ul>
+        <li>Joomla Smart Search fails to index SP Page Builder articles (reference_id = 0 issue)</li>
+        <li>Custom fields are not searchable in standard search</li>
+        <li>Smart Search database corruption during reindexing</li>
+        <li>Incompatibility issues with Joomla updates</li>
+        <li>No real-time search capabilities</li>
+        <li>Limited customization options</li>
+    </ul>
+    
+    <h3>Requirements:</h3>
+    <ul>
+        <li>Search both SP Page Builder and regular Joomla articles</li>
+        <li>Include custom fields in search</li>
+        <li>AJAX real-time search interface</li>
+        <li>Joomla update-safe implementation</li>
+        <li>No database corruption risks</li>
+        <li>Admin-configurable parameters</li>
+        <li>Standard Joomla templating for results</li>
+    </ul>
+</div>
+
+<h2>3. Technical Architecture</h2>
+<div class="section">
+    <h3>3.1 Core Principles</h3>
+    <ul>
+        <li><strong>Non-invasive:</strong> No modification of core Joomla files</li>
+        <li><strong>Database-safe:</strong> Read-only access to content tables, dedicated cache tables only</li>
+        <li><strong>Update-proof:</strong> Follows Joomla extension development standards</li>
+        <li><strong>Modular:</strong> Separated into components, modules, and plugins</li>
+        <li><strong>Cached:</strong> Intelligent caching to prevent performance issues</li>
+    </ul>
+    
+    <h3>3.2 Component Structure</h3>
+    <div class="code">
+com_ajaxsearch/           # Main component
+├── ajaxsearch.php       # Entry point
+├── controller.php       # MVC Controller
+├── models/              # Data models
+│   ├── search.php      # Search engine
+│   └── cache.php       # Cache management
+├── views/               # View templates
+│   └── results/        # Search results view
+├── tables/              # Custom tables
+│   └── cache.php       # Cache table definition
+└── assets/              # JS/CSS assets
+
+mod_ajaxsearch/          # Search module
+├── mod_ajaxsearch.php   # Module entry
+├── helper.php           # Module helper
+└── tmpl/                # Templates
+    ├── default.php      # Default template
+    └── advanced.php     # Advanced template
+
+plg_system_ajaxsearch/   # System plugin
+└── ajaxsearch.php       # Plugin initialization
+    </div>
+</div>
+
+<h2>4. Functional Requirements</h2>
+<div class="section">
+    <h3>4.1 Search Capabilities</h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
+        <tr><td>FR-001</td><td>Search regular Joomla articles (title, introtext, fulltext)</td><td>High</td></tr>
+        <tr><td>FR-002</td><td>Search SP Page Builder articles (extract text from JSON content)</td><td>High</td></tr>
+        <tr><td>FR-003</td><td>Search custom field values (Joomla custom fields)</td><td>High</td></tr>
+        <tr><td>FR-004</td><td>Search categories and tags metadata</td><td>Medium</td></tr>
+        <tr><td>FR-005</td><td>Support for multi-word search queries</td><td>High</td></tr>
+        <tr><td>FR-006</td><td>Partial word matching (LIKE %term%)</td><td>High</td></tr>
+        <tr><td>FR-007</td><td>Exact phrase matching</td><td>Medium</td></tr>
+        <tr><td>FR-008</td><td>Exclude specific content types via configuration</td><td>Medium</td></tr>
+    </table>
+    
+    <h3>4.2 AJAX Interface</h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
+        <tr><td>FR-009</td><td>Real-time search as user types (configurable delay)</td><td>High</td></tr>
+        <tr><td>FR-010</td><td>Keyboard shortcuts (Enter to search, / to focus, Esc to clear)</td><td>Medium</td></tr>
+        <tr><td>FR-011</td><td>Loading indicators during search</td><td>Medium</td></tr>
+        <tr><td>FR-012</td><td>Search history in session (optional)</td><td>Low</td></tr>
+        <tr><td>FR-013</td><td>Responsive design for mobile/desktop</td><td>High</td></tr>
+        <tr><td>FR-014</td><td>Accessible interface (ARIA labels, keyboard navigation)</td><td>Medium</td></tr>
+    </table>
+    
+    <h3>4.3 Search Results</h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th></tr>
+        <tr><td>FR-015</td><td>Display results in standard Joomla layout (using JLayout)</td><td>High</td></tr>
+        <tr><td>FR-016</td><td>Highlight search terms in results</td><td>High</td></tr>
+        <tr><td>FR-017</td><td>Show relevant snippet with context around match</td><td>High</td></tr>
+        <tr><td>FR-018</td><td>Pagination support (configurable items per page)</td><td>Medium</td></tr>
+        <tr><td>FR-019</td><td>Sorting options (relevance, date, title)</td><td>Medium</td></tr>
+        <tr><td>FR-020</td><td>Filter by content type (article, SP page, etc.)</td><td>Low</td></tr>
+        <tr><td>FR-021</td><td>Display custom field values in results</td><td>High</td></tr>
+        <tr><td>FR-022</td><td>Show content type badges (Article, SP Page, etc.)</td><td>Low</td></tr>
+    </table>
+</div>
+
+<h2>5. Non-Functional Requirements</h2>
+<div class="section">
+    <h3>5.1 Performance</h3>
+    <div class="requirement">
+        <strong>NFR-001:</strong> Search response time &lt; 500ms for typical queries<br>
+        <strong>NFR-002:</strong> Support up to 10,000 articles without degradation<br>
+        <strong>NFR-003:</strong> Implement query caching with configurable TTL<br>
+        <strong>NFR-004:</strong> Use database indexes for performance<br>
+        <strong>NFR-005:</strong> Lazy loading of SP Page Builder content
+    </div>
+    
+    <h3>5.2 Security</h3>
+    <div class="requirement">
+        <strong>NFR-006:</strong> SQL injection prevention (Joomla query builder)<br>
+        <strong>NFR-007:</strong> XSS prevention (Joomla output filtering)<br>
+        <strong>NFR-008:</strong> CSRF protection for admin actions<br>
+        <strong>NFR-009:</strong> Access control based on Joomla permissions<br>
+        <strong>NFR-010:</strong> Rate limiting for search requests
+    </div>
+</div>
+
+<h2>6. Database Design</h2>
+<div class="section">
+    <h3>6.1 Principle: No Modification to Existing Tables</h3>
+    <p><strong>Rule:</strong> Only create new tables with <code>#__ajaxsearch_</code> prefix</p>
+    
+    <h3>6.2 Tables to Create:</h3>
+    <div class="code">
+-- Search cache table
+CREATE TABLE `#__ajaxsearch_cache` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `query_hash` CHAR(32) NOT NULL,
+    `query_text` VARCHAR(255) NOT NULL,
+    `results` MEDIUMTEXT NOT NULL,
+    `hits` INT(11) DEFAULT 0,
+    `created` DATETIME NOT NULL,
+    `expires` DATETIME NOT NULL,
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_query_hash` (`query_hash`),
+    KEY `idx_expires` (`expires`),
+    KEY `idx_created` (`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+    </div>
+</div>
+
+<h2>7. Joomla Integration Points</h2>
+<div class="section">
+    <h3>7.1 Extension Manifest Files</h3>
+    <div class="code">
+&lt;!-- Component manifest --&gt;
+&lt;extension type="component" version="3.10" method="upgrade"&gt;
+    &lt;name&gt;AJAX Smart Search&lt;/name&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;description&gt;Enhanced search with SP Page Builder support&lt;/description&gt;
+    
+    &lt;!-- Installation scripts --&gt;
+    &lt;install&gt;
+        &lt;sql&gt;
+            &lt;file driver="mysql" charset="utf8"&gt;sql/install.mysql.utf8.sql&lt;/file&gt;
+        &lt;/sql&gt;
+    &lt;/install&gt;
+&lt;/extension&gt;
+    </div>
+</div>
+
+<h2>8. Search Engine Implementation</h2>
+<div class="section">
+    <div class="code">
+class AjaxsearchSearchEngine
+{
+    // Weight configuration (admin configurable)
+    private $weights = [
+        'title' => 10,
+        'introtext' => 5,
+        'fulltext' => 3,
+        'custom_fields' => 4,
+        'sppagebuilder_title' => 10,
+        'sppagebuilder_content' => 5
+    ];
+    
+    public function search($query, $options = [])
+    {
+        // Step 1: Check cache
+        // Step 2: Parse query
+        // Step 3: Search each content type
+        // Step 4: Apply ranking
+        // Step 5: Cache results
+    }
+}
+    </div>
+</div>
+
+<h2>9. User Interface Specifications</h2>
+<div class="section">
+    <h3>9.1 Frontend Search Module</h3>
+    <div class="code">
+&lt;!-- mod_ajaxsearch/tmpl/default.php --&gt;
+&lt;div class="ajaxsearch-module"&gt;
+    &lt;form role="search" aria-label="Site search"&gt;
+        &lt;input type="search" 
+               name="q" 
+               placeholder="Search..."&gt;
+        &lt;button type="submit"&gt;Search&lt;/button&gt;
+    &lt;/form&gt;
+    &lt;div class="ajaxsearch-results"&gt;
+        &lt;!-- AJAX results --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+    </div>
+</div>
+
+<h2>10. Styling and Theming</h2>
+<div class="section">
+    <h3>10.1 CSS Architecture</h3>
+    <div class="code">
+/* components/com_ajaxsearch/assets/css/ajaxsearch.css */
+.ajaxsearch-container { /* Base styles */ }
+.ajaxsearch__input {}
+.ajaxsearch__results {}
+.ajaxsearch__result {}
+    </div>
+</div>
+
+<h2>11. Security Considerations</h2>
+<div class="section">
+    <div class="code">
+// All input goes through Joomla's filtering
+$query = $app->input->getString('q', '', 'STRING');
+$query = JFilterInput::getInstance()->clean($query, 'STRING');
+    </div>
+</div>
+
+<h2>12. Installation and Upgrade Strategy</h2>
+<div class="section">
+    <h3>12.1 Installation Package</h3>
+    <div class="code">
+ajaxsearch_package_v1.0.0.zip
+├── com_ajaxsearch.zip
+├── mod_ajaxsearch.zip
+├── plg_system_ajaxsearch.zip
+└── pkg_ajaxsearch.xml
+    </div>
+</div>
+
+<h2>13. Testing Requirements</h2>
+<div class="section">
+    <h3>13.1 Test Scenarios</h3>
+    <ul>
+        <li>Installation: Fresh install, upgrade from previous versions</li>
+        <li>Search functionality: Regular articles, SP pages, custom fields</li>
+        <li>Performance: Large dataset, concurrent users</li>
+        <li>Security: SQL injection, XSS attempts</li>
+        <li>Compatibility: Different Joomla versions</li>
+    </ul>
+</div>
+
+<h2>14. Documentation</h2>
+<div class="section">
+    <h3>14.1 Documentation to Include</h3>
+    <ol>
+        <li>Installation Guide</li>
+        <li>Administrator Manual</li>
+        <li>Developer Guide</li>
+        <li>Troubleshooting</li>
+        <li>FAQ</li>
+    </ol>
+</div>
+
+<h2>15. Future Enhancements (Roadmap)</h2>
+<div class="section">
+    <h3>Phase 2 (v1.1)</h3>
+    <ul>
+        <li>Search within PDF attachments</li>
+        <li>Search suggestions/autocomplete</li>
+    </ul>
+    
+    <h3>Phase 3 (v1.2)</h3>
+    <ul>
+        <li>Multilingual search</li>
+        <li>Search analytics dashboard</li>
+    </ul>
+</div>
+
+<h2>16. Risk Mitigation</h2>
+<div class="section">
+    <table class="table">
+        <tr><th>Risk</th><th>Impact</th><th>Mitigation</th></tr>
+        <tr><td>Performance impact on large sites</td><td>High</td><td>Implement caching, limit search depth</td></tr>
+        <tr><td>SP Page Builder updates breaking JSON parsing</td><td>Medium</td><td>Version detection, fallback parsing</td></tr>
+        <tr><td>Joomla core updates breaking compatibility</td><td>Medium</td><td>Follow Joomla extension standards</td></tr>
+    </table>
+</div>
+
+<h2>17. Success Metrics</h2>
+<div class="section">
+    <h3>Technical Metrics:</h3>
+    <ul>
+        <li>Search response time &lt; 500ms (95th percentile)</li>
+        <li>Cache hit ratio > 70%</li>
+        <li>Zero critical security vulnerabilities</li>
+    </ul>
+</div>
+
+<h2>18. Delivery Timeline</h2>
+<div class="section">
+    <table class="table">
+        <tr><th>Phase</th><th>Duration</th><th>Deliverables</th></tr>
+        <tr><td>Phase 1</td><td>6-8 weeks</td><td>Core search engine, Basic AJAX interface</td></tr>
+        <tr><td>Phase 2</td><td>4 weeks</td><td>Custom field search, Advanced ranking</td></tr>
+        <tr><td>Phase 3</td><td>2 weeks</td><td>Testing, Security audit, Documentation</td></tr>
+    </table>
+</div>
+
+<h2>19. Approval</h2>
+<div class="section">
+    <table class="table signature-table">
+        <tr><td><strong>Prepared by:</strong></td><td>[Your Name/Team]</td></tr>
+        <tr><td><strong>Date:</strong></td><td>[Current Date]</td></tr>
+        <tr><td><strong>Version:</strong></td><td>1.0</td></tr>
+        <tr><td><strong>Status:</strong></td><td>Approved</td></tr>
+    </table>
+    
+    <h3>Signatures:</h3>
+    <table class="table signature-table">
+        <tr><td><strong>Technical Lead:</strong></td><td>___________________ Date: _________</td></tr>
+        <tr><td><strong>Project Manager:</strong></td><td>___________________ Date: _________</td></tr>
+        <tr><td><strong>Client:</strong></td><td>___________________ Date: _________</td></tr>
+    </table>
+</div>
+
+<div class="footer">
+    <p>Document ID: PRD-AJAXSEARCH-1.0 | Confidential & Proprietary</p>
+    <p>© [Year] [Company Name]. All rights reserved.</p>
+</div>
+
+</body>
+</html>

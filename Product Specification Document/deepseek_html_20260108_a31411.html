@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Requirements Document - Revision 2</title>
+    <style>
+        body { font-family: 'Segoe UI', Arial, sans-serif; margin: 40px; line-height: 1.6; }
+        h1, h2, h3, h4 { color: #2c3e50; }
+        h1 { border-bottom: 3px solid #3498db; padding-bottom: 15px; }
+        h2 { border-bottom: 2px solid #3498db; padding-bottom: 10px; margin-top: 40px; }
+        h3 { border-bottom: 1px solid #bdc3c7; padding-bottom: 5px; margin-top: 30px; }
+        .section { margin-bottom: 25px; }
+        .requirement { background: #f8f9fa; padding: 12px; margin: 15px 0; border-left: 5px solid #3498db; }
+        .priority-high { border-left-color: #e74c3c; }
+        .priority-medium { border-left-color: #f39c12; }
+        .priority-low { border-left-color: #27ae60; }
+        .code { background: #2c3e50; color: #ecf0f1; padding: 15px; font-family: 'Consolas', monospace; 
+                margin: 15px 0; border-radius: 5px; overflow-x: auto; }
+        .table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .table th { background: #3498db; color: white; font-weight: 600; }
+        .table th, .table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
+        .table tr:nth-child(even) { background: #f9f9f9; }
+        .signature-table { width: 70%; margin-top: 50px; }
+        .footer { margin-top: 60px; padding-top: 20px; border-top: 2px solid #eee; 
+                 font-size: 12px; color: #7f8c8d; text-align: center; }
+        .note { background: #fffde7; padding: 15px; border-left: 4px solid #ffd600; margin: 20px 0; }
+        .warning { background: #ffebee; padding: 15px; border-left: 4px solid #f44336; margin: 20px 0; }
+        .phase-badge { display: inline-block; padding: 3px 8px; border-radius: 3px; font-size: 12px; 
+                      font-weight: bold; margin-right: 5px; }
+        .phase-1 { background: #4CAF50; color: white; }
+        .phase-2 { background: #2196F3; color: white; }
+        .phase-3 { background: #9C27B0; color: white; }
+        .compatibility { background: #e3f2fd; padding: 10px; border: 1px solid #bbdefb; 
+                        border-radius: 4px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<h1>Product Requirements Document</h1>
+<h2>Joomla AJAX Smart Search Extension - Revision 2.0</h2>
+
+<div class="section">
+    <table width="100%" style="border: none;">
+        <tr>
+            <td width="50%"><strong>Document Version:</strong> 2.0</td>
+            <td><strong>Date:</strong> [Current Date]</td>
+        </tr>
+        <tr>
+            <td><strong>Status:</strong> Approved</td>
+            <td><strong>Revision:</strong> 2</td>
+        </tr>
+        <tr>
+            <td><strong>Confidentiality:</strong> Internal Use Only</td>
+            <td><strong>Prepared by:</strong> [Your Name/Team]</td>
+        </tr>
+    </table>
+</div>
+
+<div class="note">
+    <strong>Revision 2 Changes:</strong> Added Joomla 6+ compatibility requirements, enhanced features based on competitive analysis, development methodology, and validation test plan.
+</div>
+
+<h2>1. Executive Summary</h2>
+<div class="section">
+    <p>A custom Joomla extension that provides an enhanced, AJAX-powered search solution compatible with <strong>SP Page Builder articles</strong>, <strong>custom fields</strong>, and <strong>standard Joomla articles</strong>. This solution avoids Joomla's Smart Search limitations while maintaining full compatibility with Joomla updates, providing superior search capabilities without database corruption risks.</p>
+    
+    <div class="compatibility">
+        <strong>Joomla Compatibility Requirement:</strong> Must support Joomla 6.x and future versions with forward-compatible architecture that minimizes dependency on deprecated APIs.
+    </div>
+</div>
+
+<h2>2. Problem Statement</h2>
+<div class="section">
+    <h3>Current Limitations in Existing Solutions:</h3>
+    <ul>
+        <li>Joomla Smart Search fails to index SP Page Builder articles (reference_id = 0 issue)</li>
+        <li>Custom fields are not searchable in standard search</li>
+        <li>Existing solutions (Minitek Live Search) rely on Smart Search infrastructure</li>
+        <li>No direct SP Page Builder JSON parsing capabilities</li>
+        <li>Smart Search database corruption during reindexing</li>
+        <li>Incompatibility issues with Joomla updates</li>
+        <li>No real-time search capabilities in core solutions</li>
+        <li>Limited customization options for search behavior</li>
+    </ul>
+    
+    <h3>Core Requirements:</h3>
+    <ul>
+        <li>Search both SP Page Builder and regular Joomla articles without Smart Search dependency</li>
+        <li>Include custom fields in search results</li>
+        <li>AJAX real-time search interface with type-ahead suggestions</li>
+        <li>Joomla 6+ compatible with forward-looking architecture</li>
+        <li>No database corruption risks (read-only access to core tables)</li>
+        <li>Comprehensive admin-configurable parameters</li>
+        <li>Standard Joomla templating system for results</li>
+        <li>Migration path from existing search solutions</li>
+    </ul>
+</div>
+
+<h2>3. Technical Architecture</h2>
+<div class="section">
+    <h3>3.1 Core Principles</h3>
+    <ul>
+        <li><strong>Non-invasive:</strong> No modification of core Joomla files</li>
+        <li><strong>Database-safe:</strong> Read-only access to content tables, dedicated cache tables only</li>
+        <li><strong>Update-proof:</strong> Follows Joomla extension development standards</li>
+        <li><strong>Forward-compatible:</strong> Joomla 6+ API usage with version detection</li>
+        <li><strong>Modular:</strong> Separated into components, modules, and plugins</li>
+        <li><strong>Cached:</strong> Intelligent multi-layer caching system</li>
+        <li><strong>API-first:</strong> REST API for future integration capabilities</li>
+    </ul>
+    
+    <h3>3.2 Joomla 6+ Compatibility Strategy</h3>
+    <div class="requirement">
+        <strong>Architecture Principle:</strong> Use Joomla's dependency injection container, service providers, and modern MVC patterns to ensure compatibility with Joomla 6 and future versions.
+    </div>
+    
+    <div class="code">
+// Example: Version-agnostic component structure
+if (version_compare(JVERSION, '4.0', '>=')) {
+    // Joomla 4+ architecture
+    use Joomla\CMS\Extension\Service\Provider\Module;
+    use Joomla\DI\Container;
+    use Joomla\DI\ServiceProviderInterface;
+} else {
+    // Joomla 3.x compatibility layer
+    // Legacy support with deprecation warnings
+}
+
+// Database abstraction layer
+abstract class AjaxsearchDatabase
+{
+    protected $db;
+    
+    public function __construct($db)
+    {
+        $this->db = $db;
+    }
+    
+    // Version-agnostic query methods
+    public function getQueryBuilder()
+    {
+        if (class_exists('Joomla\Database\DatabaseQuery')) {
+            return $this->db->getQuery(true);
+        }
+        // Legacy support
+        return JFactory::getDbo()->getQuery(true);
+    }
+}
+    </div>
+    
+    <h3>3.3 Component Structure</h3>
+    <div class="code">
+com_ajaxsearch/                    # Main component
+├── src/
+│   ├── Extension/                # Joomla 4+ service providers
+│   ├── Service/                  # Business logic services
+│   ├── Site/                     # Frontend MVC
+│   │   ├── Controller/
+│   │   ├── Model/
+│   │   └── View/
+│   └── Administrator/            # Backend MVC
+├── services/                     # Dependency injection
+├── media/                        # Assets (JS/CSS)
+├── tmpl/                         # Override templates
+├── sql/                          # Database migrations
+│   ├── install.mysql.utf8.sql
+│   └── updates/                  # Versioned updates
+├── language/                     # Translations
+└── ajaxsearch.xml               # Component manifest
+
+mod_ajaxsearch/                   # Search module
+├── src/                          # Joomla 4+ module structure
+├── tmpl/                         # Templates
+└── mod_ajaxsearch.xml
+
+plg_system_ajaxsearch/           # System plugin
+├── src/                          # Joomla 4+ plugin structure
+└── ajaxsearch.xml
+
+plg_content_ajaxsearch/          # Content plugin for indexing
+├── src/
+└── ajaxsearch.xml
+
+pkg_ajaxsearch.xml               # Package installer
+    </div>
+</div>
+
+<h2>4. Enhanced Functional Requirements</h2>
+<div class="section">
+    <h3>4.1 SP Page Builder Integration <span class="phase-badge phase-1">Phase 1</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-030</td><td>Direct SP Page Builder JSON parsing (bypass Smart Search)</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-031</td><td>Support for SP Page Builder addons (text_block, heading, list, etc.)</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-032</td><td>Real-time SP content indexing on save via content plugin</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-033</td><td>SP Page Builder version compatibility detection</td><td>Medium</td><td>1</td></tr>
+        <tr><td>FR-034</td><td>Fallback parsing for unknown addon types</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-035</td><td>SP Page Builder image alt text and caption search</td><td>Low</td><td>3</td></tr>
+    </table>
+    
+    <h3>4.2 Custom Field Support <span class="phase-badge phase-1">Phase 1</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-047</td><td>Search within all custom field types (text, textarea, editor, etc.)</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-048</td><td>Custom field weight configuration per field</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-049</td><td>Display custom field values in search results</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-050</td><td>Exclude specific custom fields from search</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-051</td><td>Custom field grouping/search filtering</td><td>Medium</td><td>2</td></tr>
+    </table>
+    
+    <h3>4.3 Performance & Caching <span class="phase-badge phase-1">Phase 1</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-040</td><td>Multi-level caching (query, results, SP parsed content)</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-041</td><td>Configurable cache TTL per content type</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-042</td><td>Cache warming for popular searches</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-043</td><td>Query result compression for large result sets</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-044</td><td>Database query optimization for large datasets</td><td>High</td><td>1</td></tr>
+        <tr><td>FR-045</td><td>Lazy loading of search results</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-046</td><td>Debounced real-time search (configurable delay)</td><td>High</td><td>1</td></tr>
+    </table>
+    
+    <h3>4.4 Advanced AJAX Features <span class="phase-badge phase-2">Phase 2</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-052</td><td>Type-ahead suggestions (autocomplete)</td><td>High</td><td>2</td></tr>
+        <tr><td>FR-053</td><td>Search history in browser local storage</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-054</td><td>Voice search capability (Web Speech API)</td><td>Low</td><td>3</td></tr>
+        <tr><td>FR-055</td><td>Search result preview on hover</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-056</td><td>Keyboard navigation of results (arrow keys)</td><td>High</td><td>2</td></tr>
+        <tr><td>FR-057</td><td>Search result filtering (by type, date, category)</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-058</td><td>Infinite scroll pagination option</td><td>Medium</td><td>2</td></tr>
+    </table>
+    
+    <h3>4.5 Analytics & Monitoring <span class="phase-badge phase-2">Phase 2</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-059</td><td>Search analytics dashboard with charts</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-060</td><td>Popular search terms tracking</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-061</td><td>Zero-result searches logging</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-062</td><td>Search success rate measurement</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-063</td><td>User search behavior analysis</td><td>Low</td><td>3</td></tr>
+        <tr><td>FR-064</td><td>Search term trends over time</td><td>Low</td><td>3</td></tr>
+        <tr><td>FR-065</td><td>Export search analytics data (CSV/JSON)</td><td>Medium</td><td>2</td></tr>
+    </table>
+    
+    <h3>4.6 Security Enhancements <span class="phase-badge phase-3">Phase 3</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-066</td><td>Search query sanitization and validation</td><td>High</td><td>3</td></tr>
+        <tr><td>FR-067</td><td>Rate limiting per IP/user (configurable)</td><td>High</td><td>3</td></tr>
+        <tr><td>FR-068</td><td>Search term blacklisting</td><td>Medium</td><td>3</td></tr>
+        <tr><td>FR-069</td><td>SQL injection prevention with prepared statements</td><td>High</td><td>3</td></tr>
+        <tr><td>FR-070</td><td>XSS protection in search results</td><td>High</td><td>3</td></tr>
+        <tr><td>FR-071</td><td>CSRF protection for search forms</td><td>Medium</td><td>3</td></tr>
+        <tr><td>FR-072</td><td>Audit logging for admin changes</td><td>Medium</td><td>3</td></tr>
+    </table>
+    
+    <h3>4.7 Migration & Compatibility <span class="phase-badge phase-2">Phase 2</span></h3>
+    <table class="table">
+        <tr><th>ID</th><th>Requirement</th><th>Priority</th><th>Phase</th></tr>
+        <tr><td>FR-091</td><td>Migration tool from Minitek Live Search</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-092</td><td>Migration tool from Joomla Smart Search</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-093</td><td>Compatibility mode for existing templates</td><td>High</td><td>2</td></tr>
+        <tr><td>FR-094</td><td>Data import/export functionality</td><td>Medium</td><td>2</td></tr>
+        <tr><td>FR-095</td><td>Rollback capability for updates</td><td>High</td><td>2</td></tr>
+    </table>
+</div>
+
+<h2>5. Joomla 6+ Compatibility Requirements</h2>
+<div class="section">
+    <h3>5.1 Architecture Requirements</h3>
+    <div class="requirement priority-high">
+        <strong>CR-001:</strong> Use Joomla 4/5/6 MVC structure with namespaces
+    </div>
+    <div class="requirement priority-high">
+        <strong>CR-002:</strong> Implement dependency injection for all services
+    </div>
+    <div class="requirement priority-high">
+        <strong>CR-003:</strong> Use Web Asset Manager for CSS/JS inclusion
+    </div>
+    <div class="requirement priority-medium">
+        <strong>CR-004:</strong> Support both Joomla 3.x and 4+ with compatibility layer
+    </div>
+    <div class="requirement priority-high">
+        <strong>CR-005:</strong> Avoid deprecated Joomla APIs with version detection
+    </div>
+    
+    <h3>5.2 Database Compatibility</h3>
+    <div class="code">
+// Version-aware database operations
+class AjaxsearchDatabaseAdapter
+{
+    private $db;
+    
+    public function __construct($db)
+    {
+        $this->db = $db;
+        $this->checkCompatibility();
+    }
+    
+    private function checkCompatibility()
+    {
+        // Check for UTF8MB4 support
+        $this->isUtf8mb4Supported = $this->checkUtf8mb4();
+        
+        // Check for JSON column support
+        $this->isJsonSupported = $this->checkJsonSupport();
+    }
+    
+    public function createTables()
+    {
+        // Create tables with appropriate charset
+        $charset = $this->isUtf8mb4Supported ? 'utf8mb4' : 'utf8';
+        
+        $sql = "CREATE TABLE IF NOT EXISTS `#__ajaxsearch_cache` (
+            `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+            `query_hash` CHAR(32) NOT NULL,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET={$charset}";
+        
+        return $this->db->setQuery($sql)->execute();
+    }
+}
+    </div>
+    
+    <h3>5.3 API Usage Strategy</h3>
+    <div class="code">
+// Abstract service layer for Joomla version differences
+abstract class AjaxsearchServiceProvider
+{
+    public static function getInstance()
+    {
+        static $instance = null;
+        
+        if ($instance === null) {
+            if (version_compare(JVERSION, '4.0', '>=')) {
+                // Joomla 4+ service container
+                $container = Factory::getContainer();
+                $instance = $container->get(self::class);
+            } else {
+                // Joomla 3.x factory pattern
+                $instance = new self();
+            }
+        }
+        
+        return $instance;
+    }
+}
+
+// Use Joomla's event system with version detection
+class AjaxsearchContentPlugin extends CMSPlugin
+{
+    public function onContentAfterSave($context, $article, $isNew)
+    {
+        // Version-specific handling
+        if (version_compare(JVERSION, '4.0', '>=')) {
+            $this->handleJoomla4Save($context, $article, $isNew);
+        } else {
+            $this->handleJoomla3Save($context, $article, $isNew);
+        }
+    }
+}
+    </div>
+</div>
+
+<h2>6. Development Methodology</h2>
+<div class="section">
+    <h3>6.1 Phase 1: Core Foundation (Weeks 1-6)</h3>
+    <table class="table">
+        <tr><th>Week</th><th>Task</th><th>Deliverables</th></tr>
+        <tr><td>1-2</td><td>Project Setup & Architecture</td>
+            <td>• Development environment<br>• Component/module/plugin structure<br>• Database design</td></tr>
+        <tr><td>3-4</td><td>Core Search Engine</td>
+            <td>• Basic article search<br>• SP Page Builder JSON parser<br>• Custom field integration</td></tr>
+        <tr><td>5-6</td><td>AJAX Interface & Caching</td>
+            <td>• Frontend search module<br>• Multi-layer caching system<br>• Basic configuration</td></tr>
+    </table>
+    
+    <h3>6.2 Phase 2: Enhanced Features (Weeks 7-12)</h3>
+    <table class="table">
+        <tr><th>Week</th><th>Task</th><th>Deliverables</th></tr>
+        <tr><td>7-8</td><td>Advanced AJAX Features</td>
+            <td>• Type-ahead suggestions<br>• Search filtering<br>• Keyboard navigation</td></tr>
+        <tr><td>9-10</td><td>Administration & Analytics</td>
+            <td>• Enhanced admin interface<br>• Search analytics dashboard<br>• Migration tools</td></tr>
+        <tr><td>11-12</td><td>Templating & Integration</td>
+            <td>• Template override system<br>• REST API endpoints<br>• Third-party integration hooks</td></tr>
+    </table>
+    
+    <h3>6.3 Phase 3: Polish & Security (Weeks 13-16)</h3>
+    <table class="table">
+        <tr><th>Week</th><th>Task</th><th>Deliverables</th></tr>
+        <tr><td>13-14</td><td>Security Implementation</td>
+            <td>• Rate limiting<br>• Input validation<br>• Audit logging</td></tr>
+        <tr><td>15-16</td><td>Testing & Documentation</td>
+            <td>• Comprehensive testing<br>• User documentation<br>• Deployment packages</td></tr>
+    </table>
+    
+    <h3>6.4 Development Standards</h3>
+    <div class="requirement">
+        <strong>Code Standards:</strong> PSR-12 coding standards, Joomla coding conventions
+        <br><strong>Version Control:</strong> Git with semantic versioning (v1.0.0)
+        <br><strong>Documentation:</strong> PHPDoc for all classes/methods, README files
+        <br><strong>Testing:</strong> Unit tests for critical functions, integration tests
+        <br><strong>Build Process:</strong> Automated builds with GitHub Actions/Jenkins
+    </div>
+</div>
+
+<h2>7. Validation Test Plan</h2>
+<div class="section">
+    <h3>7.1 Unit Testing</h3>
+    <table class="table">
+        <tr><th>Test Category</th><th>Test Cases</th><th>Success Criteria</th></tr>
+        <tr><td>SP Page Builder Parser</td>
+            <td>• JSON parsing accuracy<br>• Addon type detection<br>• Text extraction</td>
+            <td>100% text extraction from sample SP pages</td></tr>
+        <tr><td>Search Algorithm</td>
+            <td>• Relevance scoring<br>• Multi-word queries<br>• Partial matching</td>
+            <td>Relevance scores match expected rankings</td></tr>
+        <tr><td>Cache System</td>
+            <td>• Cache hit/miss<br>• TTL expiration<br>• Cache invalidation</td>
+            <td>Cache hit ratio > 70% in performance tests</td></tr>
+    </table>
+    
+    <h3>7.2 Integration Testing</h3>
+    <table class="table">
+        <tr><th>Integration Point</th><th>Test Scenarios</th><th>Validation Method</th></tr>
+        <tr><td>Joomla Content</td>
+            <td>• Article search<br>• Category filtering<br>• Access level checks</td>
+            <td>Manual testing with different user roles</td></tr>
+        <tr><td>Custom Fields</td>
+            <td>• Field type support<br>• Search weight application<br>• Result display</td>
+            <td>Automated tests for each field type</td></tr>
+        <tr><td>Third-party Templates</td>
+            <td>• Template overrides<br>• CSS conflicts<br>• JavaScript compatibility</td>
+            <td>Testing with popular Joomla templates</td></tr>
+    </table>
+    
+    <h3>7.3 Performance Testing</h3>
+    <table class="table">
+        <tr><th>Performance Metric</th><th>Test Method</th><th>Acceptance Criteria</th></tr>
+        <tr><td>Search Response Time</td>
+            <td>Load testing with 100 concurrent users</td>
+            <td>< 500ms response time (95th percentile)</td></tr>
+        <tr><td>Memory Usage</td>
+            <td>Memory profiling during search operations</td>
+            <td>< 64MB peak memory usage</td></tr>
+        <tr><td>Database Load</td>
+            <td>Query analysis and optimization</td>
+            <td>No full table scans, proper indexing</td></tr>
+        <tr><td>Cache Efficiency</td>
+            <td>Cache hit ratio measurement</td>
+            <td>> 70% cache hit ratio</td></tr>
+    </table>
+    
+    <h3>7.4 Security Testing</h3>
+    <table class="table">
+        <tr><th>Security Aspect</th><th>Test Cases</th><th>Validation</th></tr>
+        <tr><td>SQL Injection</td>
+            <td>• Malformed search queries<br>• SQL payload injection</td>
+            <td>Zero successful injections</td></tr>
+        <tr><td>XSS Protection</td>
+            <td>• Script injection in search terms<br>• HTML payload testing</td>
+            <td>All scripts properly escaped</td></tr>
+        <tr><td>Rate Limiting</td>
+            <td>• Rapid search requests<br>• Distributed attack simulation</td>
+            <td>Proper throttling applied</td></tr>
+        <tr><td>Access Control</td>
+            <td>• Unauthorized data access<br>• Privilege escalation attempts</td>
+            <td>Proper Joomla ACL enforcement</td></tr>
+    </table>
+    
+    <h3>7.5 Compatibility Testing</h3>
+    <table class="table">
+        <tr><th>Component</th><th>Versions to Test</th><th>Success Criteria</th></tr>
+        <tr><td>Joomla CMS</td>
+            <td>3.10.x, 4.x, 5.x, 6.x</td>
+            <td>Full functionality on all versions</td></tr>
+        <tr><td>SP Page Builder</td>
+            <td>3.x, 4.x, latest version</td>
+            <td>Complete content extraction</td></tr>
+        <tr><td>PHP Version</td>
+            <td>7.4, 8.0, 8.1, 8.2</td>
+            <td>No deprecation warnings</td></tr>
+        <tr><td>Database</td>
+            <td>MySQL 5.7+, MariaDB 10.2+</td>
+            <td>All features work correctly</td></tr>
+    </table>
+    
+    <h3>7.6 User Acceptance Testing (UAT)</h3>
+    <div class="requirement">
+        <strong>UAT Scenarios:</strong>
+        <ol>
+            <li><strong>Basic Search:</strong> User searches for content, finds relevant results</li>
+            <li><strong>SP Page Content:</strong> User finds content within SP Page Builder articles</li>
+            <li><strong>Custom Fields:</strong> User searches by custom field values</li>
+            <li><strong>Admin Configuration:</strong> Admin configures search weights and sources</li>
+            <li><strong>Performance:</strong> Search feels instantaneous even with large dataset</li>
+            <li><strong>Mobile Experience:</strong> Search works well on mobile devices</li>
+        </ol>
+        
+        <strong>Success Criteria:</strong> All test scenarios pass with 95% user satisfaction in feedback surveys.
+    </div>
+</div>
+
+<h2>8. Database Design (Joomla 6+ Compatible)</h2>
+<div class="section">
+    <h3>8.1 Core Tables</h3>
+    <div class="code">
+-- UTF8MB4 compatible for Joomla 6+
+CREATE TABLE `#__ajaxsearch_cache` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `query_hash` CHAR(32) NOT NULL,
+    `query_text` VARCHAR(255) NOT NULL,
+    `results` MEDIUMTEXT NOT NULL,
+    `hits` INT(11) DEFAULT 0,
+    `created` DATETIME NOT NULL,
+    `expires` DATETIME NOT NULL,
+    `language` CHAR(7) DEFAULT '*',
+    `user_group` VARCHAR(255) DEFAULT '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_query_hash_lang_group` (`query_hash`, `language`, `user_group`),
+    KEY `idx_expires` (`expires`),
+    KEY `idx_created` (`created`),
+    KEY `idx_hits` (`hits`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- SP Page Builder content cache
+CREATE TABLE `#__ajaxsearch_sp_cache` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `sppagebuilder_id` INT(11) NOT NULL,
+    `parsed_content` MEDIUMTEXT NOT NULL,
+    `content_hash` VARCHAR(32) NOT NULL,
+    `parsed_date` DATETIME NOT NULL,
+    `version` VARCHAR(20) DEFAULT '',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_sppagebuilder_id` (`sppagebuilder_id`),
+    KEY `idx_content_hash` (`content_hash`),
+    KEY `idx_parsed_date` (`parsed_date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- Search analytics
+CREATE TABLE `#__ajaxsearch_analytics` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `query` VARCHAR(255) NOT NULL,
+    `results_count` INT(11) NOT NULL,
+    `user_id` INT(11) DEFAULT NULL,
+    `session_id` VARCHAR(128) DEFAULT NULL,
+    `ip_address` VARCHAR(45) DEFAULT NULL,
+    `user_agent` TEXT,
+    `search_time` FLOAT DEFAULT NULL,
+    `timestamp` DATETIME NOT NULL,
+    `zero_results` TINYINT(1) DEFAULT 0,
+    PRIMARY KEY (`id`),
+    KEY `idx_query` (`query`(191)),
+    KEY `idx_timestamp` (`timestamp`),
+    KEY `idx_user_id` (`user_id`),
+    KEY `idx_zero_results` (`zero_results`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+    </div>
+    
+    <h3>8.2 Database Migration Strategy</h3>
+    <div class="code">
+-- Versioned migration files
+sql/
+├── install.mysql.utf8.sql           # Initial installation
+└── updates/
+    ├── mysql/
+    │   ├── 1.0.0.sql                # Initial version
+    │   ├── 1.1.0.sql                # Add analytics table
+    │   ├── 1.2.0.sql                # Add SP cache table
+    │   └── 2.0.0.sql                # Joomla 6 compatibility updates
+    └── pkg_ajaxsearch.xml           # Package update server
+
+-- Example migration file: updates/mysql/1.1.0.sql
+ALTER TABLE `#__ajaxsearch_cache` 
+ADD COLUMN `language` CHAR(7) DEFAULT '*' AFTER `expires`,
+ADD COLUMN `user_group` VARCHAR(255) DEFAULT '' AFTER `language`;
+
+CREATE INDEX `idx_query_hash_lang_group` 
+ON `#__ajaxsearch_cache` (`query_hash`, `language`, `user_group`);
+    </div>
+</div>
+
+<h2>9. Deployment & Maintenance</h2>
+<div class="section">
+    <h3>9.1 Deployment Packages</h3>
+    <div class="code">
+# Package structure for Joomla Extension Manager
+ajaxsearch_package_v2.0.0.zip
+├── com_ajaxsearch.zip              # Component
+├── mod_ajaxsearch.zip              # Frontend module
+├── plg_system_ajaxsearch.zip       # System plugin
+├── plg_content_ajaxsearch.zip      # Content plugin
+├── pkg_ajaxsearch.xml              # Package manifest
+└── README.md                       # Installation instructions
+
+# Build automation
+.github/workflows/build.yml
+├── PHP linting
+├── Unit tests
+├── Package assembly
+└── Version tagging
+    </div>
+    
+    <h3>9.2 Update Mechanism</h3>
+    <div class="requirement">
+        <strong>Update Server:</strong> Secure update server with version checking
+        <br><strong>Rollback Capability:</strong> Database and file rollback on failed updates
+        <br><strong>Compatibility Checks:</strong> Verify Joomla and PHP versions before update
+        <br><strong>Change Log:</strong> Detailed change log with migration instructions
+    </div>
+</div>
+
+<h2>10. Competitive Analysis & Differentiation</h2>
+<div class="section">
+    <h3>10.1 Comparison with Minitek Live Search</h3>
+    <table class="table">
+        <tr><th>Feature</th><th>Minitek Live Search</th><th>Our Solution</th><th>Advantage</th></tr>
+        <tr><td>SP Page Builder Support</td><td>Relies on Smart Search</td><td>Direct JSON parsing</td><td>No index corruption issues</td></tr>
+        <tr><td>Custom Field Search</td><td>Limited or none</td><td>Full support with weights</td><td>Comprehensive field search</td></tr>
+        <tr><td>Caching System</td><td>Basic</td><td>Multi-layer intelligent cache</td><td>Better performance</td></tr>
+        <tr><td>Joomla 6+ Compatibility</td><td>May require updates</td><td>Built with forward compatibility</td><td>Future-proof</td></tr>
+        <tr><td>Analytics</td><td>Limited</td><td>Comprehensive dashboard</td><td>Better insights</td></tr>
+        <tr><td>Security Features</td><td>Standard Joomla</td><td>Enhanced security layer</td><td>More secure</td></tr>
+    </table>
+    
+    <h3>10.2 Unique Selling Points</h3>
+    <ol>
+        <li><strong>SP Page Builder Native Integration:</strong> Direct content parsing without Smart Search dependency</li>
+        <li><strong>Joomla 6+ Forward Compatibility:</strong> Built with modern Joomla APIs and patterns</li>
+        <li><strong>Comprehensive Custom Field Support:</strong> Search across all Joomla custom field types</li>
+        <li><strong>Enterprise-grade Performance:</strong> Multi-layer caching and optimization</li>
+        <li><strong>Migration Tools:</strong> Easy transition from existing search solutions</li>
+        <li><strong>Security First:</strong> Built-in protection against common vulnerabilities</li>
+    </ol>
+</div>
+
+<h2>11. Success Metrics & KPIs</h2>
+<div class="section">
+    <table class="table">
+        <tr><th>Metric</th><th>Target</th><th>Measurement Method</th></tr>
+        <tr><td>Search Response Time</td><td>< 500ms (95th percentile)</td><td>Performance monitoring</td></tr>
+        <tr><td>Cache Hit Ratio</td><td>> 70%</td><td>Cache analytics</td></tr>
+        <tr><td>Search Success Rate</td><td>> 85% (users find what they need)</td><td>User feedback surveys</td></tr>
+        <tr><td>Zero-Result Queries</td><td>< 15% of total searches</td><td>Analytics tracking</td></tr>
+        <tr><td>User Satisfaction</td><td>> 90% positive feedback</td><td>Post-search feedback</td></tr>
+        <tr><td>System Uptime</td><td>99.9%</td><td>Monitoring system</td></tr>
+        <tr><td>Security Incidents</td><td>0 critical vulnerabilities</td><td>Security scanning</td></tr>
+    </table>
+</div>
+
+<h2>12. Approval</h2>
+<div class="section">
+    <table class="table signature-table">
+        <tr><td colspan="2"><strong>Document Approval</strong></td></tr>
+        <tr><td width="30%"><strong>Technical Lead:</strong></td>
+            <td>_________________________ Date: ___________</td></tr>
+        <tr><td><strong>Project Manager:</strong></td>
+            <td>_________________________ Date: ___________</td></tr>
+        <tr><td><strong>Quality Assurance:</strong></td>
+            <td>_________________________ Date: ___________</td></tr>
+        <tr><td><strong>Client Representative:</strong></td>
+            <td>_________________________ Date: ___________</td></tr>
+    </table>
+    
+    <h3>Revision History</h3>
+    <table class="table">
+        <tr><th>Version</th><th>Date</th><th>Changes</th><th>Approved By</th></tr>
+        <tr><td>1.0</td><td>[Date]</td><td>Initial specification</td><td>[Name]</td></tr>
+        <tr><td>2.0</td><td>[Current Date]</td><td>Added Joomla 6+ compatibility, enhanced features, development methodology, validation test plan</td><td>[Name]</td></tr>
+    </table>
+</div>
+
+<div class="footer">
+    <p><strong>Document ID:</strong> PRD-AJAXSEARCH-2.0 | <strong>Confidential & Proprietary</strong></p>
+    <p>© [Year] [Company Name]. All rights reserved. This document contains confidential information and is intended only for the recipients named above.</p>
+    <p>Unauthorized distribution, reproduction, or disclosure of this document is strictly prohibited.</p>
+</div>
+
+</body>
+</html>
