@@ -1,0 +1,45 @@
+name: PHP CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, xml, curl, json, mysql, gd, intl, zip
+    
+    - name: Check PHP syntax
+      run: |
+        find . -name "*.php" -not -path "./vendor/*" -not -path "./builds/*" -exec php -l {} \;
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.3'
+        extensions: mbstring, xml, curl, json, mysql, gd, intl, zip
+    
+    - name: Verify PHP extensions
+      run: php -m
+    
+    - name: Run basic tests
+      run: |
+        php -r "echo 'PHP Version: ' . PHP_VERSION . PHP_EOL;"
+        php -r "echo 'JSON support: ' . (function_exists('json_encode') ? 'Yes' : 'No') . PHP_EOL;"
+        php -r "echo 'MySQL support: ' . (function_exists('mysqli_connect') ? 'Yes' : 'No') . PHP_EOL;"

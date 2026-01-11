@@ -1,9 +1,9 @@
 <?php
 /**
- * @package     AJAXSearch
+ * @package     RaysAjaxSearch
  * @subpackage  Module
- * @copyright   [Your Copyright]
- * @license     GNU/GPL
+ * @copyright   Copyright (C) 2026 Ray Caron. All rights reserved.
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
@@ -11,6 +11,7 @@ defined('_JEXEC') or die;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
 
 // Include module helper
 require_once __DIR__ . '/helper.php';
@@ -48,13 +49,13 @@ $document = Factory::getDocument();
 $wa = $document->getWebAssetManager();
 
 // Add module CSS
-$wa->registerAndUseStyle('mod_ajaxsearch', 'mod_ajaxsearch/ajaxsearch.css');
+$wa->registerAndUseStyle('mod_raysajaxsearch', 'mod_raysajaxsearch/ajaxsearch.css');
 
 // Add module JS
-$wa->registerAndUseScript('mod_ajaxsearch', 'mod_ajaxsearch/ajaxsearch.js', [], ['type' => 'module']);
+$wa->registerAndUseScript('mod_raysajaxsearch', 'mod_raysajaxsearch/ajaxsearch.js', [], ['type' => 'module']);
 
 // Pass data to JavaScript
-$document->addScriptOptions('mod_ajaxsearch_' . $module->id, $moduleData);
+$document->addScriptOptions('mod_raysajaxsearch_' . $module->id, $moduleData);
 
 // Include template
-require ModuleHelper::getLayoutPath('mod_ajaxsearch', $params->get('layout', 'default'));
+require ModuleHelper::getLayoutPath('mod_raysajaxsearch', $params->get('layout', 'default'));

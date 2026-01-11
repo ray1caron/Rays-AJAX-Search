@@ -1,17 +1,17 @@
 <?php
 /**
- * @package     AJAXSearch
+ * @package     RaysAjaxSearch
  * @subpackage  Module
- * @copyright   [Your Copyright]
- * @license     GNU/GPL
+ * @copyright   Copyright (C) 2026 Ray Caron. All rights reserved.
+ * @license     GNU General Public License version 3 or later; see LICENSE.txt
  */
 
 defined('_JEXEC') or die;
 
 /**
- * Helper class for AJAX Search module
+ * Helper class for Rays AJAX Search module
  */
-class ModAjaxsearchHelper
+class ModRaysajaxsearchHelper
 {
     /**
      * Get search statistics

@@ -1,5 +1,5 @@
 /**
- * AJAX Search Module - Main JavaScript
+ * Rays AJAX Search Module - Main JavaScript
  */
 
 (function() {
@@ -44,7 +44,7 @@
             enableKeyboardNavigation();
         }
         
-        console.log('AJAX Search module initialized:', moduleId);
+        console.log('Rays AJAX Search module initialized:', moduleId);
     }
     
     // Cache DOM elements
@@ -54,22 +54,22 @@
         
         elements = {
             container,
-            form: container.querySelector('.ajaxsearch-form'),
-            input: container.querySelector('.ajaxsearch-input'),
-            button: container.querySelector('.ajaxsearch-button'),
-            resultsContainer: container.querySelector('.ajaxsearch-results-container'),
-            results: container.querySelector('.ajaxsearch-results'),
-            resultsHeader: container.querySelector('.ajaxsearch-results-header'),
-            resultsCount: container.querySelector('.ajaxsearch-results-count'),
-            resultsTime: container.querySelector('.ajaxsearch-results-time'),
-            clearButton: container.querySelector('.ajaxsearch-clear'),
-            loading: container.querySelector('.ajaxsearch-loading'),
-            noResults: container.querySelector('.ajaxsearch-no-results'),
-            error: container.querySelector('.ajaxsearch-error'),
-            errorMessage: container.querySelector('.ajaxsearch-error-message'),
-            pagination: container.querySelector('.ajaxsearch-pagination'),
-            keyboardHint: container.querySelector('.ajaxsearch-keyboard-hint'),
-            typeFilters: container.querySelectorAll('.ajaxsearch-type-filter')
+            form: container.querySelector('.raysajaxsearch-form'),
+            input: container.querySelector('.raysajaxsearch-input'),
+            button: container.querySelector('.raysajaxsearch-button'),
+            resultsContainer: container.querySelector('.raysajaxsearch-results-container'),
+            results: container.querySelector('.raysajaxsearch-results'),
+            resultsHeader: container.querySelector('.raysajaxsearch-results-header'),
+            resultsCount: container.querySelector('.raysajaxsearch-results-count'),
+            resultsTime: container.querySelector('.raysajaxsearch-results-time'),
+            clearButton: container.querySelector('.raysajaxsearch-clear'),
+            loading: container.querySelector('.raysajaxsearch-loading'),
+            noResults: container.querySelector('.raysajaxsearch-no-results'),
+            error: container.querySelector('.raysajaxsearch-error'),
+            errorMessage: container.querySelector('.raysajaxsearch-error-message'),
+            pagination: container.querySelector('.raysajaxsearch-pagination'),
+            keyboardHint: container.querySelector('.raysajaxsearch-keyboard-hint'),
+            typeFilters: container.querySelectorAll('.raysajaxsearch-type-filter')
         };
     }
     
@@ -153,7 +153,7 @@
     function handleKeyboardNavigation(e) {
         if (!elements.results || elements.results.style.display === 'none') return;
         
-        const results = elements.results.querySelectorAll('.ajaxsearch-result');
+        const results = elements.results.querySelectorAll('.raysajaxsearch-result');
         if (results.length === 0) return;
         
         switch (e.key) {
@@ -385,53 +385,53 @@
     function renderResults(results) {
         if (!elements.results || !results || results.length === 0) return;
         
-        const template = document.getElementById('ajaxsearch-result-template');
+        const template = document.getElementById('raysajaxsearch-result-template');
         if (!template) return;
         
         results.forEach((result, index) => {
             const clone = template.content.cloneNode(true);
-            const resultElement = clone.querySelector('.ajaxsearch-result');
+            const resultElement = clone.querySelector('.raysajaxsearch-result');
             
             // Set result attributes
             resultElement.setAttribute('data-id', result.id || index);
             resultElement.setAttribute('data-type', result.type || 'unknown');
             
             // Fill in content
-            const link = clone.querySelector('.ajaxsearch-result-link');
+            const link = clone.querySelector('.raysajaxsearch-result-link');
             if (link && result.url) {
                 link.href = result.url;
                 link.setAttribute('title', result.title || '');
             }
             
-            const title = clone.querySelector('.ajaxsearch-result-title-text');
+            const title = clone.querySelector('.raysajaxsearch-result-title-text');
             if (title) {
                 title.textContent = result.title || 'Untitled';
             }
             
-            const type = clone.querySelector('.ajaxsearch-result-type');
+            const type = clone.querySelector('.raysajaxsearch-result-type');
             if (type) {
                 type.textContent = result.type_label || result.type || '';
             }
             
-            const snippet = clone.querySelector('.ajaxsearch-result-snippet');
+            const snippet = clone.querySelector('.raysajaxsearch-result-snippet');
             if (snippet && result.snippet) {
                 snippet.innerHTML = result.snippet;
             }
             
-            const category = clone.querySelector('.ajaxsearch-result-category');
+            const category = clone.querySelector('.raysajaxsearch-result-category');
             if (category && result.category) {
                 category.textContent = result.category;
                 category.style.display = 'inline';
             }
             
-            const date = clone.querySelector('.ajaxsearch-result-date');
+            const date = clone.querySelector('.raysajaxsearch-result-date');
             if (date && result.created) {
                 const dateObj = new Date(result.created);
                 date.textContent = dateObj.toLocaleDateString();
                 date.style.display = 'inline';
             }
             
-            const relevance = clone.querySelector('.ajaxsearch-result-relevance');
+            const relevance = clone.querySelector('.raysajaxsearch-result-relevance');
             if (relevance && result.relevance !== undefined) {
                 relevance.textContent = `Relevance: ${Math.round(result.relevance)}%`;
                 relevance.style.display = 'inline';
@@ -455,7 +455,7 @@
     function renderPagination() {
         if (!elements.pagination || config.totalPages <= 1) return;
         
-        const template = document.getElementById('ajaxsearch-pagination-template');
+        const template = document.getElementById('raysajaxsearch-pagination-template');
         if (!template) return;
         
         // Clear existing pagination
@@ -463,10 +463,10 @@
         elements.pagination.style.display = 'block';
         
         const clone = template.content.cloneNode(true);
-        const container = clone.querySelector('.ajaxsearch-pagination-container');
-        const prevButton = clone.querySelector('.ajaxsearch-pagination-prev');
-        const nextButton = clone.querySelector('.ajaxsearch-pagination-next');
-        const pagesContainer = clone.querySelector('.ajaxsearch-pagination-pages');
+        const container = clone.querySelector('.raysajaxsearch-pagination-container');
+        const prevButton = clone.querySelector('.raysajaxsearch-pagination-prev');
+        const nextButton = clone.querySelector('.raysajaxsearch-pagination-next');
+        const pagesContainer = clone.querySelector('.raysajaxsearch-pagination-pages');
         
         // Previous button
         if (prevButton) {
@@ -502,7 +502,7 @@
             // Create page buttons
             for (let i = startPage; i <= endPage; i++) {
                 const pageButton = document.createElement('button');
-                pageButton.className = 'ajaxsearch-pagination-page';
+                pageButton.className = 'raysajaxsearch-pagination-page';
                 pageButton.textContent = i;
                 pageButton.type = 'button';
                 
@@ -657,7 +657,7 @@
     function getModuleConfig() {
         // Try to get config from Joomla script options
         const moduleId = Object.keys(Joomla.getOptions() || {})
-            .find(key => key.startsWith('mod_ajaxsearch_'));
+            .find(key => key.startsWith('mod_raysajaxsearch_'));
         
         if (moduleId) {
             return Joomla.getOptions(moduleId);
@@ -688,12 +688,12 @@
     document.addEventListener('DOMContentLoaded', function() {
         const config = getModuleConfig();
         if (config) {
-            init('ajaxsearch-module-' + config.id, config.params);
+            init('raysajaxsearch-module-' + config.id, config.params);
         }
     });
     
     // Export for debugging
-    window.AJAXSearch = {
+    window.RaysAJAXSearch = {
         init,
         search,
         clearSearch,

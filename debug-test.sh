@@ -1,0 +1,13 @@
+#!/bin/bash
+echo "=== Debug Test ==="
+echo ""
+echo "Make sure in VS Code:"
+echo "1. Open Run and Debug (Ctrl+Shift+D)"
+echo "2. Select 'Listen for Xdebug'"
+echo "3. Click play button or F5"
+echo ""
+echo "Then run:"
+echo "php -dxdebug.start_with_request=yes test-xdebug.php"
+echo ""
+echo "Or in browser:"
+echo "http://localhost:8080/test-xdebug.php?XDEBUG_SESSION_START=VSCODE"
