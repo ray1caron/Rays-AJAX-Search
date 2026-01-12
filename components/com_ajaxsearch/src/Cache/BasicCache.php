@@ -163,7 +163,18 @@ class AjaxsearchCacheBasic
      */
     public function clearAll()
     {
-        return $this->db->execute('TRUNCATE TABLE ' . $this->db->quoteName('#__ajaxsearch_cache'));
+        try {
+            $query = $this->db->getQuery(true)
+                ->delete($this->db->quoteName('#__ajaxsearch_cache'));
+            
+            $this->db->setQuery($query);
+            $this->db->execute();
+            
+            return true;
+        } catch (Exception $e) {
+            error_log('AJAXSearch Cache Clear Error: ' . $e->getMessage());
+            return false;
+        }
     }
     
     /**

@@ -39,9 +39,9 @@ class AjaxsearchControllerConfig extends BaseController
     public function save()
     {
         // Check token
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-        
         $app = Factory::getApplication();
+        $app->checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        
         $model = $this->getModel('Config');
         
         // Get posted data
@@ -64,9 +64,9 @@ class AjaxsearchControllerConfig extends BaseController
     public function clearCache()
     {
         // Check token
-        JSession::checkToken() or jexit(Text::_('JINVALID_TOKEN'));
-        
         $app = Factory::getApplication();
+        $app->checkToken() or jexit(Text::_('JINVALID_TOKEN'));
+        
         $model = $this->getModel('Config');
         
         // Clear cache
