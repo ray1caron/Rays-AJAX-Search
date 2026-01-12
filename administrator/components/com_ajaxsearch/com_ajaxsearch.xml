@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="4.0" method="upgrade">
+    <name>com_ajaxsearch</name>
+    <version>0.1.0</version>
+    <author>Ray Caron</author>
+    <description>Rays AJAX Search component (admin scaffolding)</description>
+    <administration>
+        <menu>COM_AJAXSEARCH</menu>
+        <files>
+            <filename>index.html</filename>
+        </files>
+    </administration>
+</extension>
