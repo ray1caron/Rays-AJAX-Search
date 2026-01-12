@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" method="upgrade" version="5.0">
+    <name>COM_AJAXSEARCH</name>
+    <author>Ray Caron</author>
+    <creationDate>January 2026</creationDate>
+    <copyright>Copyright (C) 2026 Ray Caron. All rights reserved.</copyright>
+    <license>GNU General Public License version 3 or later; see LICENSE.txt</license>
+    <authorEmail>ray@example.com</authorEmail>
+    <authorUrl>https://github.com/ray1caron/Rays-AJAX-Search</authorUrl>
+    <version>1.0.0</version>
+    <description>COM_AJAXSEARCH_XML_DESCRIPTION</description>
+</extension>
