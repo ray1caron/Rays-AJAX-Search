@@ -19,10 +19,13 @@ $moduleId = 'raysajaxsearch-module-' . $module->id;
 // Get current search query if any
 $app = Factory::getApplication();
 $currentQuery = $app->input->getString('q', '');
+
+// Get results page URL for fallback action
+$resultsPageUrl = Uri::root() . 'index.php?option=com_ajaxsearch&view=results';
 ?>
 <div id="<?php echo $moduleId; ?>" class="<?php echo $moduleClass; ?>" data-module-id="<?php echo $module->id; ?>">
     <div class="raysajaxsearch-container">
-        <form class="raysajaxsearch-form" role="search" aria-label="<?php echo Text::_('MOD_RAYS_AJAX_SEARCH_SEARCH_FORM'); ?>">
+        <form class="raysajaxsearch-form" role="search" aria-label="<?php echo Text::_('MOD_RAYS_AJAX_SEARCH_SEARCH_FORM'); ?>" action="<?php echo htmlspecialchars($resultsPageUrl, ENT_QUOTES, 'UTF-8'); ?>" method="get">
             <div class="raysajaxsearch-input-group">
                 <input 
                     type="search" 

@@ -29,6 +29,12 @@ if (is_string($searchTypes)) {
     $searchTypes = explode(',', $searchTypes);
 }
 
+// Prepare URLs for endpoints
+$baseUrl = Uri::root();
+$suggestUrl = $baseUrl . 'components/com_ajaxsearch/src/Component/suggest.php';
+$ajaxUrl = $baseUrl . 'components/com_ajaxsearch/src/Component/ajax.php';
+$resultsPageUrl = $baseUrl . 'index.php?option=com_ajaxsearch&view=results';
+
 // Prepare module data
 $moduleData = [
     'id' => $module->id,
@@ -40,7 +46,9 @@ $moduleData = [
         'typing_delay' => $delay,
         'results_limit' => $limit,
         'show_images' => $showImages,
-        'ajax_url' => Uri::root() . 'components/com_ajaxsearch/src/Component/ajax.php'
+        'suggest_url' => $suggestUrl,
+        'ajax_url' => $ajaxUrl,
+        'results_page_url' => $resultsPageUrl
     ]
 ];
 

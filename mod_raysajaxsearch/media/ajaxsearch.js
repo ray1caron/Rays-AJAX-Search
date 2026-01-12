@@ -11,15 +11,20 @@
         typingDelay: 300,
         resultsLimit: 10,
         searchTypes: ['article', 'sppagebuilder'],
+        suggestUrl: '',
         ajaxUrl: '',
+        resultsPageUrl: '',
         currentPage: 1,
         totalPages: 1,
         totalResults: 0,
         currentQuery: '',
         selectedResult: -1,
         typingTimeout: null,
+        suggestTimeout: null,
         isLoading: false,
-        keyboardNavigation: true
+        isSuggesting: false,
+        keyboardNavigation: true,
+        suggestions: []
     };
     
     // DOM elements cache
@@ -111,8 +116,23 @@
         const query = elements.input.value.trim();
         
         if (query.length >= config.minChars) {
-            search(query, 1);
-            elements.input.blur(); // Remove focus after search
+            // Navigate to results page with query
+            if (config.resultsPageUrl) {
+                const url = new URL(config.resultsPageUrl, window.location.origin);
+                url.searchParams.set('q', query);
+                
+                // Add selected types if needed
+                const selectedTypes = getSelectedTypes();
+                if (selectedTypes.length > 0 && selectedTypes.length < config.searchTypes.length) {
+                    url.searchParams.set('types', selectedTypes.join(','));
+                }
+                
+                window.location.href = url.toString();
+            } else {
+                // Fallback to inline search
+                search(query, 1);
+                elements.input.blur();
+            }
         } else {
             showError(`Please enter at least ${config.minChars} characters`);
         }
@@ -123,20 +143,21 @@
         const query = e.target.value.trim();
         
         // Clear previous timeout
-        if (config.typingTimeout) {
-            clearTimeout(config.typingTimeout);
+        if (config.suggestTimeout) {
+            clearTimeout(config.suggestTimeout);
         }
         
         // Hide results if query is too short
         if (query.length < config.minChars) {
             hideResults();
+            hideSuggestions();
             return;
         }
         
-        // Set new timeout for debounced search
-        config.typingTimeout = setTimeout(() => {
+        // Set new timeout for debounced suggestions
+        config.suggestTimeout = setTimeout(() => {
             if (query.length >= config.minChars) {
-                search(query, 1);
+                getSuggestions(query);
             }
         }, config.typingDelay);
     }
@@ -243,6 +264,98 @@
         }
     }
     
+    // Get typeahead suggestions
+    async function getSuggestions(query) {
+        if (config.isSuggesting) return;
+        if (!config.suggestUrl) return;
+        
+        // Update state
+        config.currentQuery = query;
+        
+        // Build suggest URL
+        const url = new URL(config.suggestUrl, window.location.origin);
+        url.searchParams.append('q', query);
+        url.searchParams.append('limit', 5);
+        
+        try {
+            config.isSuggesting = true;
+            const response = await fetch(url.toString());
+            
+            // Defensive handling for non-JSON responses
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                console.error('Suggestions endpoint did not return JSON');
+                hideSuggestions();
+                return;
+            }
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const data = await response.json();
+            
+            if (data.success && data.suggestions) {
+                displaySuggestions(data.suggestions);
+            } else {
+                hideSuggestions();
+            }
+            
+        } catch (error) {
+            console.error('Suggestions error:', error);
+            hideSuggestions();
+            
+        } finally {
+            config.isSuggesting = false;
+        }
+    }
+    
+    // Display suggestions
+    function displaySuggestions(suggestions) {
+        config.suggestions = suggestions;
+        
+        // For now, just show them in the results area as inline suggestions
+        // In a full implementation, create a dropdown list
+        if (!suggestions || suggestions.length === 0) {
+            hideSuggestions();
+            return;
+        }
+        
+        // Create suggestions dropdown (simple implementation)
+        if (elements.results) {
+            clearResults();
+            elements.results.style.display = 'block';
+            
+            const suggestionsHtml = suggestions.map((suggestion, index) => `
+                <div class="raysajaxsearch-suggestion" data-index="${index}" data-text="${suggestion.text || suggestion}">
+                    <span class="raysajaxsearch-suggestion-text">${suggestion.text || suggestion}</span>
+                    ${suggestion.count ? `<span class="raysajaxsearch-suggestion-count">(${suggestion.count})</span>` : ''}
+                </div>
+            `).join('');
+            
+            elements.results.innerHTML = suggestionsHtml;
+            
+            // Add click handlers
+            const suggestionElements = elements.results.querySelectorAll('.raysajaxsearch-suggestion');
+            suggestionElements.forEach(el => {
+                el.addEventListener('click', () => {
+                    const text = el.getAttribute('data-text');
+                    elements.input.value = text;
+                    elements.form.dispatchEvent(new Event('submit'));
+                });
+            });
+        }
+    }
+    
+    // Hide suggestions
+    function hideSuggestions() {
+        config.suggestions = [];
+        if (elements.results) {
+            elements.results.innerHTML = '';
+            elements.results.style.display = 'none';
+        }
+    }
+    
     // Perform search
     async function search(query, page = 1) {
         if (config.isLoading) return;
@@ -280,6 +393,12 @@
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            // Defensive handling for non-JSON responses
+            const contentType = response.headers.get('content-type');
+            if (!contentType || !contentType.includes('application/json')) {
+                throw new Error('Server did not return JSON response');
             }
             
             const data = await response.json();
@@ -675,8 +794,12 @@
                     min_chars: parseInt(moduleElement.dataset.minChars) || 2,
                     typing_delay: parseInt(moduleElement.dataset.typingDelay) || 300,
                     results_limit: parseInt(moduleElement.dataset.resultsLimit) || 10,
+                    suggest_url: moduleElement.dataset.suggestUrl || 
+                        window.location.origin + '/components/com_ajaxsearch/src/Component/suggest.php',
                     ajax_url: moduleElement.dataset.ajaxUrl || 
-                        window.location.origin + '/components/com_ajaxsearch/src/Component/ajax.php'
+                        window.location.origin + '/components/com_ajaxsearch/src/Component/ajax.php',
+                    results_page_url: moduleElement.dataset.resultsPageUrl || 
+                        window.location.origin + '/index.php?option=com_ajaxsearch&view=results'
                 }
             };
         }
