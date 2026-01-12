@@ -40,22 +40,31 @@ $moduleData = [
         'typing_delay' => $delay,
         'results_limit' => $limit,
         'show_images' => $showImages,
-        'ajax_url' => Uri::root() . 'components/com_ajaxsearch/src/Component/ajax.php'
+        'ajax_url' => Uri::root(true) . '/index.php?option=com_ajaxsearch&format=json'
     ]
 ];
 
 // Load CSS and JS
 $document = Factory::getDocument();
-$wa = $document->getWebAssetManager();
 
-// Add module CSS
-$wa->registerAndUseStyle('mod_raysajaxsearch', 'mod_raysajaxsearch/ajaxsearch.css');
+// Add CSS directly
+$document->addStyleSheet(Uri::root(true) . '/modules/mod_raysajaxsearch/media/ajaxsearch.css');
 
-// Add module JS
-$wa->registerAndUseScript('mod_raysajaxsearch', 'mod_raysajaxsearch/ajaxsearch.js', [], ['type' => 'module']);
+// Inject config directly into page as a global variable before loading the script
+$configJson = json_encode($moduleData);
+$ajaxUrl = Uri::root(true) . '/modules/mod_raysajaxsearch/ajax.php';
+$document->addScriptDeclaration(<<<JS
+window.raysAjaxSearchConfig = window.raysAjaxSearchConfig || {};
+window.raysAjaxSearchConfig[{$moduleData['id']}] = {
+    id: {$moduleData['id']},
+    params: {$configJson},
+    ajaxUrl: '{$ajaxUrl}'
+};
+JS
+);
 
-// Pass data to JavaScript
-$document->addScriptOptions('mod_raysajaxsearch_' . $module->id, $moduleData);
+// Add JS directly
+$document->addScript(Uri::root(true) . '/modules/mod_raysajaxsearch/media/ajaxsearch.js');
 
 // Include template
 require ModuleHelper::getLayoutPath('mod_raysajaxsearch', $params->get('layout', 'default'));

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="module" client="site" version="4.0.0" method="upgrade">
+	<name>Minitek Live Search Module</name>
+	<author>Minitek.gr</author>
+	<copyright>(C) 2011 - 2022 Minitek.gr. All rights reserved.</copyright>
+	<creationDate>April 2014</creationDate>
+	<license>http://www.gnu.org/licenses/gpl-3.0.html GNU/GPL</license>
+	<authorUrl>https://www.minitek.gr</authorUrl>
+	<version>4.2.0</version>
+	<description>
+	<![CDATA[
+	An advanced search engine for Joomla.
+	]]>
+	</description>
+
+	<files>
+		<filename module="mod_miniteklivesearch">mod_miniteklivesearch.php</filename>
+		<filename>index.html</filename>
+	</files>
+
+	<languages>
+		<language tag="en-GB">mod_miniteklivesearch.ini</language>
+	</languages>
+
+	<updateservers>
+		<server type="extension" priority="1" name="Minitek Live Search Module"><![CDATA[https://update.minitek.gr/joomla-extensions/minitek_live_search_module.xml]]></server>
+	</updateservers>
+
+	<config>
+
+		<fields name="params">
+
+			<fieldset name="basic" addfieldprefix="Joomla\Component\MinitekLiveSearch\Administrator\Field">
+
+				<field
+					name="form"
+					type="searchform"
+					label="COM_MINITEKLIVESEARCH_FIELD_SEARCH_FORM"
+					required="true"
+				/>
+
+			</fieldset>
+
+			<fieldset name="advanced">
+
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="MOD_MINITEKLIVESEARCH_CONFIG_CLASS_SUFFIX_LABEL"
+					description="MOD_MINITEKLIVESEARCH_CONFIG_CLASS_SUFFIX_DESC"
+				/>
+
+			</fieldset>
+
+		</fields>
+
+	</config>
+
+</extension>
