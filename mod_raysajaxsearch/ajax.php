@@ -11,12 +11,6 @@ header('Access-Control-Allow-Origin: *');
 // SECURITY: Define execution constant
 define('_JEXEC', 1);
 
-// PHASE 1 TEST: Just echo to verify endpoint is reachable
-echo json_encode(['success' => true, 'test' => 'Phase 1: Endpoint reachable', 'results' => []]);
-exit;
-
-// ========== BELOW IS DISABLED DURING TESTING ==========
-
 // Calculate JPATH_BASE correctly
 $parts = explode(DIRECTORY_SEPARATOR, __DIR__);
 array_pop($parts); // Remove current dir
@@ -93,7 +87,7 @@ try {
         $results[] = [
             'id' => $article->id,
             'title' => htmlspecialchars($article->title),
-            'excerpt' => htmlspecialchars($excerpt),
+            'snippet' => htmlspecialchars($excerpt),
             'url' => Uri::root() . 'index.php?view=article&id=' . $article->id . '&catid=' . $article->catid,
             'category' => htmlspecialchars($article->category_name),
             'date' => $article->created,
